@@ -1,0 +1,131 @@
+const commentsData = [
+  {
+    text: 'Just discovered Comit — a sleek, minimal, and dev-friendly space. Clean UI, easy to use, and perfect for modern projects.',
+    name: 'Silje Reppe',
+    handle: '@siljeareppe',
+    avatar: './images/img1.jpg',
+  },
+  {
+    text: 'Everything about this feels next level: the layout, the interaction, and how easy it is to browse what other developers share.',
+    name: 'Amina Noor',
+    handle: '@aminadev',
+    avatar:
+      'https://images.unsplash.com/photo-1542309667-2a115d1f54c6?q=80&w=872&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+  {
+    text: 'Literally the coolest concept for a community app. It feels social without being cluttered.',
+    name: 'Jonas Berg',
+    handle: '@jonascodes',
+    avatar:
+      'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+  {
+    text: 'The design language is strong. Smooth, simple, and it gives the content room to breathe.',
+    name: 'Mia Hansen',
+    handle: '@miaux',
+    avatar:
+      'https://images.unsplash.com/photo-1581403341630-a6e0b9d2d257?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+  {
+    text: 'Comit has that polished product feel already. The profile and feed ideas are especially strong.',
+    name: 'David Ali',
+    handle: '@davidbuilds',
+    avatar:
+      'https://images.unsplash.com/photo-1600180758890-6b94519a8ba6?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+  {
+    text: 'This is the kind of front-end project that stands out because it feels intentional and well thought out.',
+    name: 'Lina Voss',
+    handle: '@linacreates',
+    avatar:
+      'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+  {
+    text: 'I really like how social features are presented here. It feels approachable, not overwhelming.',
+    name: 'Marcus Lee',
+    handle: '@marcusui',
+    avatar:
+      'https://images.unsplash.com/photo-1528892952291-009c663ce843?q=80&w=688&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3',
+  },
+  {
+    text: 'A strong concept with clean execution. The welcome flow and motion design make a great first impression.',
+    name: 'Bob Dylan',
+    handle: '@bobbyD',
+    avatar:
+      'https://images.unsplash.com/photo-1566492031773-4f4e44671857?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+];
+
+function createCommentCard(comment) {
+  const article = document.createElement('article');
+  article.className = 'comment-card';
+
+  article.innerHTML = `
+    <p class="comment-text">${comment.text}</p>
+    <div class="comment-footer">
+      <img class="comment-avatar" src="${comment.avatar}" alt="${comment.name}">
+      <div class="comment-meta">
+        <span class="comment-name">${comment.name}</span>
+        <span class="comment-handle">${comment.handle}</span>
+      </div>
+    </div>
+  `;
+
+  return article;
+}
+
+function renderTrack(trackElement, comments) {
+  const fragment = document.createDocumentFragment();
+
+  comments.forEach((comment) => {
+    fragment.appendChild(createCommentCard(comment));
+  });
+
+  comments.forEach((comment) => {
+    fragment.appendChild(createCommentCard(comment));
+  });
+
+  trackElement.appendChild(fragment);
+  trackElement.dataset.ready = 'true';
+}
+
+function splitCommentsIntoRows(comments) {
+  const topRow = [];
+  const bottomRow = [];
+
+  comments.forEach((comment, index) => {
+    if (index % 2 === 0) {
+      topRow.push(comment);
+    } else {
+      bottomRow.push(comment);
+    }
+  });
+
+  return { topRow, bottomRow };
+}
+
+function revealCardsOnLoad() {
+  const cards = document.querySelectorAll('.comment-card');
+
+  cards.forEach((card, index) => {
+    setTimeout(() => {
+      card.classList.add('is-visible');
+    }, 70 * index);
+  });
+}
+
+function initCommentsSection() {
+  const trackTop = document.getElementById('trackTop');
+  const trackBottom = document.getElementById('trackBottom');
+
+  if (!trackTop || !trackBottom) return;
+
+  const { topRow, bottomRow } = splitCommentsIntoRows(commentsData);
+
+  renderTrack(trackTop, topRow);
+  renderTrack(trackBottom, bottomRow);
+
+  revealCardsOnLoad();
+}
+
+document.addEventListener('DOMContentLoaded', initCommentsSection);
